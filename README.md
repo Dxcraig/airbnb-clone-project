@@ -554,6 +554,215 @@ Security is a critical component of the AirBnB Clone backend, protecting sensiti
 - **Incident Response Plan**: Procedures are in place to quickly respond to and mitigate security incidents
 - **User Education**: Users are encouraged to use strong passwords and enable two-factor authentication where available
 
+## CI/CD Pipeline
+
+### Overview
+
+Continuous Integration/Continuous Deployment (CI/CD) pipelines automate the process of building, testing, and deploying code changes to production environments. For the AirBnB Clone project, CI/CD pipelines are essential for maintaining code quality, accelerating development velocity, and ensuring reliable deployments.
+
+### What is CI/CD?
+
+**Continuous Integration (CI)**:
+- Every code commit triggers an automated build and test process
+- Code changes are frequently integrated into a shared repository
+- Automated tests run against the code to identify bugs and regressions
+- Code quality checks and linting ensure adherence to coding standards
+- Developers receive immediate feedback on code quality and test results
+
+**Continuous Deployment (CD)**:
+- Validated code changes are automatically deployed to staging and production environments
+- Deployment processes are fully automated and repeatable
+- Infrastructure is provisioned and configured automatically using Infrastructure as Code
+- Rollback mechanisms enable quick recovery if issues arise
+- Monitoring and alerting systems verify deployment success
+
+### Why CI/CD is Important for This Project
+
+**1. Accelerated Development Velocity**
+- Automated testing and deployment reduce manual overhead
+- Developers can focus on writing features rather than manual testing and deployment tasks
+- Shorter feedback loops enable faster iteration and bug fixes
+- Multiple deployments per day become feasible with full automation
+
+**2. Improved Code Quality**
+- Automated tests catch bugs early before they reach production
+- Code quality checks enforce coding standards and prevent technical debt
+- Linting and static analysis identify potential issues in real-time
+- Peer reviews are enhanced with automated quality metrics
+
+**3. Reduced Deployment Risk**
+- Automated testing ensures only validated code reaches production
+- Consistent deployment processes eliminate manual errors
+- Staged deployments (dev → staging → production) allow progressive rollout
+- Automated rollback capabilities enable quick recovery from issues
+
+**4. Enhanced Reliability**
+- Automated health checks and monitoring verify system functionality post-deployment
+- Infrastructure is provisioned consistently, eliminating environment-related issues
+- Automated scaling ensures performance under load
+- Downtime is minimized through automated deployment strategies
+
+**5. Compliance & Audit Trail**
+- Every deployment is tracked with timestamp, committer, and change details
+- Automated logs provide complete audit trails for compliance requirements
+- Security scanning ensures vulnerable dependencies are identified
+- Deployment history enables traceability for regulatory purposes
+
+### CI/CD Pipeline Tools
+
+#### **GitHub Actions**
+- **Purpose**: Automate workflows directly from GitHub repositories
+- **Key Features**:
+  - Triggers workflows on push, pull requests, and scheduled events
+  - Supports matrix builds for testing across multiple Python versions
+  - Built-in integration with GitHub repositories
+  - Free for public repositories and generous free tier for private repos
+- **Use Cases**: Build automation, automated testing, deployment orchestration
+
+#### **Docker**
+- **Purpose**: Containerize the application for consistent environments
+- **Key Features**:
+  - Dockerfile defines application dependencies and runtime configuration
+  - Docker images ensure consistency between development, staging, and production
+  - Multi-stage builds optimize image size
+  - Docker Compose orchestrates multi-container applications (app, database, cache)
+- **Use Cases**: Building containerized applications, local development environments
+
+#### **PostgreSQL & Redis**
+- **Purpose**: Persistent and cached data storage for pipeline environments
+- **Key Features**:
+  - Docker containers enable ephemeral databases for testing
+  - Data migrations are automated as part of the deployment pipeline
+  - Redis cache is reset between test runs for isolation
+- **Use Cases**: Database testing, performance testing with realistic data
+
+#### **Pytest & Coverage**
+- **Purpose**: Automated unit and integration testing
+- **Key Features**:
+  - Pytest framework runs all test suites automatically
+  - Code coverage reports identify untested code paths
+  - Test results are aggregated and reported in CI pipeline
+  - Failed tests automatically fail the pipeline, preventing deployment
+- **Use Cases**: Unit testing, integration testing, regression testing
+
+#### **SonarQube / Code Quality Tools**
+- **Purpose**: Automated code quality analysis
+- **Key Features**:
+  - Static code analysis identifies bugs, vulnerabilities, and code smells
+  - Code coverage metrics track test effectiveness
+  - Technical debt is quantified and tracked over time
+  - Quality gates prevent deployment if standards are not met
+- **Use Cases**: Code review automation, quality metrics, security scanning
+
+#### **Dependabot**
+- **Purpose**: Automated dependency management and security scanning
+- **Key Features**:
+  - Monitors dependencies for known vulnerabilities
+  - Automatically creates pull requests with security patches
+  - Keeps dependencies up-to-date with latest versions
+  - Security alerts notify of new vulnerabilities
+- **Use Cases**: Security vulnerability management, dependency updates
+
+#### **Container Registry (Docker Hub / GitHub Container Registry)**
+- **Purpose**: Store and manage Docker images
+- **Key Features**:
+  - Versioned images for each build
+  - Images are pulled during deployment
+  - Access control and image scanning for vulnerabilities
+  - Integration with deployment tools
+- **Use Cases**: Image storage, deployment artifact management
+
+#### **Infrastructure as Code (Terraform / Bicep)**
+- **Purpose**: Automate infrastructure provisioning
+- **Key Features**:
+  - Infrastructure is defined as code and version controlled
+  - Consistent environment creation across deployments
+  - Automated scaling configuration
+  - Cost management through resource optimization
+- **Use Cases**: Environment provisioning, infrastructure management
+
+### Typical CI/CD Pipeline Workflow
+
+```
+Developer commits code
+    ↓
+GitHub webhook triggers GitHub Actions
+    ↓
+    ├── Build Docker image
+    │   └── Push to registry
+    ├── Run automated tests (pytest)
+    │   └── Generate coverage reports
+    ├── Code quality analysis (SonarQube)
+    │   └── Check security vulnerabilities
+    └── Check dependencies (Dependabot)
+    ↓
+All checks pass?
+    ├── NO → Notify developer, stop pipeline
+    └── YES → Continue
+    ↓
+Deploy to staging environment
+    ├── Run integration tests
+    ├── Run performance tests
+    └── Run security tests
+    ↓
+Staging tests pass?
+    ├── NO → Notify team, stop pipeline
+    └── YES → Continue
+    ↓
+Deploy to production (with approval)
+    ├── Rolling deployment (0 downtime)
+    ├── Health checks verify deployment
+    └── Rollback if health checks fail
+    ↓
+Post-deployment monitoring
+    ├── Application logs
+    ├── Performance metrics
+    └── Error rate tracking
+```
+
+### Key Pipeline Stages
+
+**1. Code Build Stage**
+- Compile code and resolve dependencies
+- Build Docker container image
+- Push image to container registry
+- Validate build artifacts
+
+**2. Testing Stage**
+- Run unit tests with coverage reporting
+- Execute integration tests against test database
+- Perform API contract testing
+- Run security scanning for vulnerabilities
+- Validate code quality against standards
+
+**3. Staging Deployment**
+- Deploy Docker image to staging environment
+- Run end-to-end tests
+- Perform load and performance testing
+- Conduct security penetration testing
+- Manual QA verification (if needed)
+
+**4. Production Deployment**
+- Deploy to production with zero-downtime strategies
+- Run health checks and smoke tests
+- Monitor application logs and metrics
+- Execute automated rollback if issues detected
+
+**5. Post-Deployment**
+- Continuous monitoring and alerting
+- Performance and error rate tracking
+- User experience monitoring
+- Regular security scanning
+
+### Benefits for AirBnB Clone Project
+
+- **Booking System Reliability**: Automated tests ensure bookings are processed correctly
+- **Payment Processing Safety**: CI/CD catches payment-related bugs before production
+- **Data Integrity**: Database migrations are tested and validated automatically
+- **User Security**: Security scanning identifies vulnerabilities before deployment
+- **High Availability**: Automated deployments and monitoring ensure 99.9% uptime
+- **Rapid Feature Delivery**: Teams can deploy multiple times per day with confidence
+
 ---
 
 **Status**: Project Initialization in Progress

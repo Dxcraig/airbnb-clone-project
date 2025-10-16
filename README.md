@@ -46,16 +46,70 @@ The backend for the AirBnB Clone project is designed to provide a robust and sca
 
 ## Technology Stack
 
-| Technology | Purpose |
-|-----------|---------|
-| **Django** | High-level Python web framework for building RESTful API |
-| **Django REST Framework** | Tools for creating and managing RESTful APIs |
-| **PostgreSQL** | Powerful relational database for data storage |
-| **GraphQL** | Flexible and efficient data querying |
-| **Celery** | Asynchronous task handling (notifications, payments) |
-| **Redis** | Caching and session management |
-| **Docker** | Containerization for consistent environments |
-| **CI/CD Pipelines** | Automated testing and deployment |
+### Backend Framework & API Development
+
+**Django**
+- A high-level Python web framework that provides rapid development capabilities and a batteries-included approach
+- Handles URL routing, middleware, authentication, and ORM for database interactions
+- Provides built-in admin panel for easy management of backend data
+- Ensures security through CSRF protection, SQL injection prevention, and XSS protection
+
+**Django REST Framework (DRF)**
+- A powerful toolkit for building RESTful APIs on top of Django
+- Provides serializers for data validation and transformation
+- Offers authentication and permission classes for securing API endpoints
+- Includes built-in pagination, filtering, and throttling capabilities
+- Generates automatic API documentation and browsable API interface
+
+### Data Storage & Querying
+
+**PostgreSQL**
+- A robust, open-source relational database management system
+- Handles storage of user profiles, property listings, bookings, payments, and reviews
+- Supports complex queries and transactions for data consistency
+- Enables efficient indexing for fast data retrieval
+- Provides ACID compliance for reliable data operations
+
+**Redis**
+- An in-memory data store used for caching frequently accessed data
+- Reduces database load by caching user sessions and property information
+- Enables real-time features through pub/sub messaging
+- Improves API response times by storing cached query results
+- Supports rate limiting and session management
+
+**GraphQL**
+- A flexible query language for efficient data fetching
+- Allows clients to request only the data they need, reducing bandwidth consumption
+- Enables complex queries without multiple API calls
+- Provides strong typing and introspection capabilities for API documentation
+- Supports real-time subscriptions for live updates on bookings and reviews
+
+### Task Processing & Scheduling
+
+**Celery**
+- A distributed task queue library for asynchronous task processing
+- Handles long-running operations without blocking API requests (e.g., payment processing, email notifications)
+- Processes background jobs such as sending booking confirmations and review notifications
+- Enables scheduled tasks for maintenance and data cleanup
+- Provides task retry mechanisms and error handling
+
+### Containerization & Deployment
+
+**Docker**
+- Containerization platform that packages the backend application with all dependencies
+- Ensures consistency across development, staging, and production environments
+- Simplifies deployment and scaling of backend services
+- Enables easy environment replication for team members
+- Supports microservices architecture if future scaling is needed
+
+### CI/CD & DevOps
+
+**CI/CD Pipelines**
+- Automated workflows for building, testing, and deploying code changes
+- Runs automated tests on every commit to ensure code quality
+- Automatically deploys validated code to production environments
+- Reduces manual errors and speeds up release cycles
+- Enables continuous monitoring and quick rollback capabilities
 
 ## Team Roles
 

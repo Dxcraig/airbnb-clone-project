@@ -299,6 +299,98 @@ Users (Guest)
 - **Check Constraints**: Price values must be positive; dates must be in valid format; ratings must be within 1-5 range
 - **Temporal Constraints**: Check-out dates must be after check-in dates; payment dates must correspond to booking creation
 
+## Feature Breakdown
+
+### 1. User Management
+
+**Description**: The user management system provides secure registration, authentication, and profile management capabilities for both guests and hosts. Users can create accounts with email and password, manage their personal profiles, and maintain account settings. This feature also handles user verification, password reset functionality, and profile information updates.
+
+**Key Contributions**:
+- Establishes a secure foundation for all platform interactions
+- Enables distinct roles for guests and hosts with role-specific features
+- Ensures user data protection through encryption and hashing mechanisms
+
+### 2. Property Management
+
+**Description**: Property management allows hosts to create, update, retrieve, and delete property listings on the platform. Hosts can input comprehensive property details including description, location, amenities, pricing, and availability status. This feature supports property images, detailed categorization, and real-time availability management.
+
+**Key Contributions**:
+- Enables hosts to showcase their properties to potential guests
+- Provides a dynamic catalog that reflects current availability and pricing
+- Allows hosts to maintain control over their listings and update information as needed
+
+### 3. Booking System
+
+**Description**: The booking system facilitates the complete reservation workflow, allowing guests to search available properties, check availability for specific dates, and make reservations. The system validates booking requests, prevents double-booking, and manages booking lifecycle states from confirmation to completion. Special requests and notes can be included to personalize each booking.
+
+**Key Contributions**:
+- Creates a seamless experience for guests to reserve properties
+- Ensures data integrity by preventing conflicting bookings
+- Manages the core transaction between guests and hosts
+
+### 4. Payment Processing
+
+**Description**: The payment processing system handles all financial transactions securely, recording payments related to bookings with support for multiple payment methods. The system tracks payment status (pending, completed, failed, refunded) and maintains detailed transaction records for auditing purposes. Integration with payment gateways ensures secure handling of sensitive financial information.
+
+**Key Contributions**:
+- Enables monetization of the platform through reliable payment handling
+- Provides financial transparency and accountability for all transactions
+- Ensures secure, PCI-compliant processing of payment information
+
+### 5. Review System
+
+**Description**: The review system enables guests to leave detailed feedback and ratings for properties and hosts after completing bookings. Reviews include overall ratings, category-specific scores (cleanliness, communication, accuracy), and written comments. The system ensures only verified guests who completed bookings can post reviews, maintaining review authenticity.
+
+**Key Contributions**:
+- Builds trust through transparent feedback mechanisms
+- Helps future guests make informed decisions based on real experiences
+- Provides hosts with valuable feedback to improve their properties and service quality
+
+### 6. API Documentation
+
+**Description**: The API is documented using the OpenAPI standard, providing clear specifications for all endpoints, request/response formats, and error codes. Automatic API documentation generation allows developers to explore endpoints interactively through a browsable interface. Comprehensive documentation reduces integration time and improves developer experience.
+
+**Key Contributions**:
+- Facilitates third-party integrations and frontend development
+- Enables rapid API adoption by providing clear, accessible documentation
+- Supports both REST and GraphQL query interfaces for flexible client requirements
+
+### 7. Data Optimization
+
+**Description**: Data optimization strategies include implementing strategic database indexes, caching frequently accessed data in Redis, and optimizing query patterns for performance. The system monitors database performance, identifies bottlenecks, and implements solutions to maintain fast response times as data grows. Caching reduces database load and improves API response times significantly.
+
+**Key Contributions**:
+- Ensures the platform remains responsive as user base and data volume grow
+- Reduces infrastructure costs through efficient resource utilization
+- Improves user experience by providing fast, reliable API responses
+
+### 8. Asynchronous Task Processing
+
+**Description**: The system uses Celery to handle long-running operations asynchronously, including payment processing, email notifications, and background maintenance tasks. Tasks are queued and processed in the background, allowing the API to return responses immediately without waiting for completion. Task retry mechanisms and error handling ensure reliability.
+
+**Key Contributions**:
+- Improves API responsiveness by offloading heavy operations
+- Enables reliable execution of critical tasks with retry mechanisms
+- Supports scalability by distributing workload across multiple workers
+
+### 9. Authentication & Authorization
+
+**Description**: Secure authentication mechanisms protect user accounts through password hashing and token-based authentication (JWT). Role-based access control ensures users can only access resources appropriate to their role (guest, host, admin). Permission checks are enforced on all sensitive endpoints to maintain security.
+
+**Key Contributions**:
+- Protects user data and prevents unauthorized access
+- Enables distinct user roles with appropriate permission levels
+- Provides secure API endpoint protection through token validation
+
+### 10. Real-time Features
+
+**Description**: GraphQL subscriptions and Redis pub/sub messaging enable real-time updates for booking status changes, availability updates, and review notifications. Clients can subscribe to relevant events and receive live updates without polling the API. Real-time features improve user engagement and provide timely notifications.
+
+**Key Contributions**:
+- Enhances user experience with instant notifications
+- Reduces unnecessary API calls through event-driven architecture
+- Enables collaborative features like live availability updates
+
 ---
 
 **Status**: Project Initialization in Progress

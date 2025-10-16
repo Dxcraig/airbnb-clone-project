@@ -57,6 +57,52 @@ The backend for the AirBnB Clone project is designed to provide a robust and sca
 | **Docker** | Containerization for consistent environments |
 | **CI/CD Pipelines** | Automated testing and deployment |
 
+## Team Roles
+
+### Backend Developer
+**Responsibility**: Implement API endpoints, database schemas, and business logic that power the AirBnB Clone platform.
+
+**Key Responsibilities**:
+- Design and develop RESTful API endpoints for user management, property listings, bookings, payments, and reviews
+- Implement core business logic for booking and payment processing
+- Write clean, maintainable, and well-documented code
+- Collaborate with the database administrator on schema optimization
+- Ensure code quality through peer reviews and adherence to coding standards
+
+### Database Administrator
+**Responsibility**: Manage database design, implementation, and optimization to ensure efficient data retrieval and storage.
+
+**Key Responsibilities**:
+- Design normalized database schemas for users, properties, bookings, payments, and reviews
+- Implement and maintain database indexes for frequently accessed data
+- Set up caching strategies using Redis to improve performance
+- Monitor database performance and identify bottlenecks
+- Ensure data integrity, security, and backup protocols
+- Collaborate with backend developers on query optimization
+
+### DevOps Engineer
+**Responsibility**: Handle deployment, monitoring, and scaling of the backend services across development, staging, and production environments.
+
+**Key Responsibilities**:
+- Design and implement CI/CD pipelines for automated testing and deployment
+- Containerize backend services using Docker
+- Manage infrastructure provisioning and cloud resource allocation
+- Set up monitoring, logging, and alerting systems
+- Ensure high availability, scalability, and disaster recovery
+- Automate deployment processes and reduce release cycles
+
+### QA Engineer
+**Responsibility**: Ensure the backend functionalities are thoroughly tested and meet quality standards before deployment.
+
+**Key Responsibilities**:
+- Create and execute comprehensive test plans and test cases
+- Perform functional, integration, and performance testing
+- Identify, document, and track defects and issues
+- Verify API compliance with OpenAPI specifications
+- Conduct security and authentication testing
+- Collaborate with developers to ensure quality and timely resolution of issues
+- Design and maintain test automation scripts for continuous quality assurance
+
 ---
 
 **Status**: Project Initialization in Progress

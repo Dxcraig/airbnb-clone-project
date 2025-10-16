@@ -391,6 +391,169 @@ Users (Guest)
 - Reduces unnecessary API calls through event-driven architecture
 - Enables collaborative features like live availability updates
 
+## API Security
+
+### Overview
+
+Security is a critical component of the AirBnB Clone backend, protecting sensitive user data, financial transactions, and platform integrity. The following key security measures are implemented across the system to create a robust defense against threats and vulnerabilities.
+
+### 1. Authentication
+
+**Implementation**: Token-Based Authentication (JWT)
+- Users authenticate with email and password credentials
+- Upon successful login, a JSON Web Token (JWT) is issued containing user identity and permissions
+- JWT tokens are included in request headers (Authorization: Bearer <token>) for subsequent API calls
+- Tokens expire after a configured duration, requiring re-authentication for enhanced security
+- Refresh tokens enable users to obtain new access tokens without re-entering credentials
+
+**Why It's Crucial**:
+- **Prevents Unauthorized Access**: Only authenticated users can access protected resources and their data
+- **Enables User Identification**: Tracks which user performed specific actions for audit and accountability purposes
+- **Protects Sensitive Operations**: Authentication is mandatory before users can create bookings, make payments, or access personal information
+- **Complies with Security Standards**: JWT-based authentication is industry-standard and widely recognized as secure
+
+### 2. Authorization & Access Control
+
+**Implementation**: Role-Based Access Control (RBAC)
+- Users are assigned roles: Guest, Host, or Admin, each with specific permissions
+- Endpoint-level authorization checks verify user permissions before processing requests
+- Guests cannot modify properties or access other guests' bookings
+- Hosts can only manage their own properties and view bookings for those properties
+- Admin role has elevated permissions for platform management and oversight
+
+**Why It's Crucial**:
+- **Data Isolation**: Users can only access their own data and resources appropriate to their role
+- **Prevents Privilege Escalation**: Authorization checks prevent unauthorized users from performing privileged operations
+- **Protects Property Management**: Hosts cannot modify other hosts' listings or access their revenue data
+- **Ensures Business Logic Compliance**: Authorization enforces the business rules of the platform
+
+### 3. Password Security
+
+**Implementation**: Cryptographic Hashing
+- User passwords are never stored in plain text in the database
+- Passwords are hashed using bcrypt with salt, making them resistant to brute-force attacks
+- Password strength requirements are enforced (minimum length, complexity)
+- Users cannot reuse recently used passwords
+- Failed login attempts are tracked to detect and prevent brute-force attacks
+
+**Why It's Crucial**:
+- **Protects User Accounts**: Even if the database is compromised, passwords remain secure due to hashing
+- **Prevents Account Takeover**: Strong password policies and cryptographic hashing make accounts difficult to breach
+- **Compliance with Standards**: Password security measures align with OWASP and industry best practices
+- **Maintains User Trust**: Users can be confident that their credentials are securely protected
+
+### 4. Rate Limiting
+
+**Implementation**: API Request Throttling
+- Rate limits are enforced per user or IP address (e.g., 100 requests per hour)
+- Requests exceeding the limit receive a 429 (Too Many Requests) response
+- Different endpoints may have different rate limits based on resource consumption
+- Temporary bans are applied after multiple rate limit violations
+- Admin users may have higher rate limits or exemptions
+
+**Why It's Crucial**:
+- **Prevents Abuse**: Rate limiting prevents malicious users from overwhelming the API with requests
+- **Protects Against DoS Attacks**: Distributed denial-of-service attacks are mitigated through request throttling
+- **Ensures Fair Resource Usage**: Rate limits prevent individual users from monopolizing server resources
+- **Maintains Service Availability**: By preventing abuse, rate limiting ensures the service remains available for legitimate users
+
+### 5. HTTPS/TLS Encryption
+
+**Implementation**: Transport Layer Security
+- All API communications occur over HTTPS with TLS 1.2 or higher
+- SSL/TLS certificates are obtained and maintained for the production domain
+- HTTP requests are automatically redirected to HTTPS
+- Security headers (HSTS, X-Content-Type-Options) are configured to enforce secure communication
+- Certificate pinning may be implemented for mobile clients to prevent man-in-the-middle attacks
+
+**Why It's Crucial**:
+- **Protects Data in Transit**: HTTPS encryption prevents interception of sensitive data like passwords and payment information
+- **Prevents Man-in-the-Middle Attacks**: TLS ensures that data cannot be intercepted or modified during transmission
+- **Builds User Confidence**: HTTPS certificates signal to users that the platform is secure
+- **Complies with Payment Standards**: PCI-DSS and other standards require HTTPS for handling financial data
+
+### 6. Payment Security
+
+**Implementation**: PCI-DSS Compliance & Payment Gateway Integration
+- Payment processing is delegated to trusted payment gateways (e.g., Stripe, PayPal)
+- Credit card information is never stored or processed directly by the backend
+- Payment data is tokenized, storing only secure tokens instead of raw card details
+- Transactions are encrypted and validated before processing
+- Fraud detection systems monitor suspicious transaction patterns
+
+**Why It's Crucial**:
+- **Protects Financial Data**: Delegation to payment gateways ensures credit card data is handled by PCI-DSS certified services
+- **Prevents Fraud**: Tokenization and fraud detection protect against unauthorized transactions
+- **Ensures Legal Compliance**: PCI-DSS compliance is mandatory for any platform processing credit card payments
+- **Builds Payment Confidence**: Users trust their payment information is secure when handled by reputable gateways
+
+### 7. Input Validation & Sanitization
+
+**Implementation**: Server-Side Data Validation
+- All user inputs are validated on the server side before processing
+- Input length limits prevent buffer overflow attacks
+- Special characters and potentially malicious code are sanitized or rejected
+- Data type validation ensures inputs match expected formats (e.g., dates, numbers)
+- SQL injection attacks are prevented through parameterized queries and ORM usage
+
+**Why It's Crucial**:
+- **Prevents Injection Attacks**: Input validation prevents SQL injection and other code injection attacks
+- **Maintains Data Integrity**: Validation ensures only valid data is stored in the database
+- **Protects Against XSS**: Sanitization prevents cross-site scripting attacks through stored or reflected XSS
+- **Ensures Application Stability**: Validation prevents malformed data from causing application errors
+
+### 8. CORS (Cross-Origin Resource Sharing)
+
+**Implementation**: Strict CORS Policies
+- CORS headers are configured to allow requests only from authorized frontend domains
+- Credentials and sensitive headers are protected through proper CORS configuration
+- Preflight requests are validated before allowing cross-origin requests
+- CORS misconfiguration is prevented through explicit whitelisting of allowed origins
+
+**Why It's Crucial**:
+- **Prevents Unauthorized Frontend Access**: CORS policies prevent malicious websites from making requests to the API
+- **Protects Against CSRF Attacks**: Proper CORS configuration is part of CSRF defense mechanisms
+- **Enables Secure Frontend Communication**: Authorized frontends can communicate securely with the API
+- **Controls API Access**: CORS policies act as a first line of defense against unauthorized API usage
+
+### 9. Logging & Monitoring
+
+**Implementation**: Comprehensive Security Logging
+- All authentication attempts (successful and failed) are logged with timestamps
+- API access logs record user identity, endpoints accessed, and response codes
+- Security events (authorization failures, rate limit violations) are logged and monitored
+- Logs are stored securely and retained for audit purposes
+- Real-time alerts notify administrators of suspicious activities or security incidents
+
+**Why It's Crucial**:
+- **Enables Incident Detection**: Logging helps identify security breaches, unauthorized access, or suspicious patterns
+- **Supports Forensic Analysis**: Detailed logs enable investigation of security incidents and identification of root causes
+- **Ensures Accountability**: Logs track user actions for compliance and audit purposes
+- **Aids Compliance**: Security logging is required by regulations like GDPR and HIPAA
+
+### 10. Dependency & Vulnerability Management
+
+**Implementation**: Regular Security Updates
+- Dependencies are monitored for known vulnerabilities using tools like Dependabot
+- Security patches are applied promptly to all libraries and frameworks
+- Vulnerable packages are identified and replaced with secure alternatives
+- Regular security audits and code reviews are conducted
+- Penetration testing is performed periodically to identify potential weaknesses
+
+**Why It's Crucial**:
+- **Prevents Known Exploits**: Keeping dependencies updated protects against publicly known vulnerabilities
+- **Maintains Long-Term Security**: Regular updates ensure security improves as new threats are discovered
+- **Protects User Data**: Vulnerable dependencies could be exploited to compromise user information
+- **Maintains Trust**: A secure, well-maintained codebase demonstrates commitment to security
+
+### Security Best Practices
+
+- **Principle of Least Privilege**: Users and services have only the minimum permissions required
+- **Defense in Depth**: Multiple security layers work together to provide comprehensive protection
+- **Regular Security Audits**: The codebase and infrastructure are regularly reviewed for vulnerabilities
+- **Incident Response Plan**: Procedures are in place to quickly respond to and mitigate security incidents
+- **User Education**: Users are encouraged to use strong passwords and enable two-factor authentication where available
+
 ---
 
 **Status**: Project Initialization in Progress
